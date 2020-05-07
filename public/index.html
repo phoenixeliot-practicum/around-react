@@ -41,7 +41,7 @@
         <label class="popup__label">
           <input type="text" name="name" id="owner-name"
                  class="popup__input popup__input_type_name" placeholder="Имя"
-                 required minlength="2" maxlength="40" pattern="/^[a-z0-9-]+$/">
+                 required minlength="2" maxlength="40" pattern="[a-zA-Zа-яА-Я -]{1,}">
           <span class="popup__error" id="owner-name-error"></span>
         </label>
         <label class="popup__label">
@@ -58,7 +58,7 @@
     <div class="popup__content">
       <button type="button" class="popup__close"></button>
       <h3 class="popup__title">Новое место</h3>
-      <form class="popup__form" name="new-place">
+      <form class="popup__form" name="new-place" novalidate>
         <label class="popup__label">
           <input type="text" name="place-name" id="place-name"
                  class="popup__input popup__input_type_card-name" placeholder="Название"
@@ -71,7 +71,7 @@
                  required>
           <span class="popup__error" id="place-link-error"></span>
         </label>
-        <button type="submit" class="button popup__button">Сохранить</button>
+        <button type="submit" class="button popup__button popup__button_disabled">Сохранить</button>
       </form>
     </div>
   </div>
@@ -84,6 +84,7 @@
   </div>
 </div>
 <script src="./scripts/index.js" defer></script>
+<script src="./scripts/validate.js" defer></script>
 
 <!--Относится к реализации пятого спринта-->
 <template id="card-template">
