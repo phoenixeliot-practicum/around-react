@@ -1,5 +1,5 @@
-import cards from "./cards.json";
-import users from "./users.json";
+const cards = require('./cards.json');
+const users = require('./users.json');
 
 module.exports = {
   cards,
