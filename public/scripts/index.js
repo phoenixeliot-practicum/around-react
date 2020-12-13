@@ -1,4 +1,5 @@
-const ESC_KEYCODE = 27;
+import Card from "./Card.js";
+
 // Константы
 
 const initialCards = [
@@ -34,16 +35,10 @@ const initialCards = [
   },
 ];
 
-// Темплейты
-const cardTemplate = document
-  .querySelector("#card-template")
-  .content.querySelector(".places__item");
-
 // Врапперы
 const placesWrap = document.querySelector(".places__list");
 const editFormModalWindow = document.querySelector(".popup_type_edit");
 const cardFormModalWindow = document.querySelector(".popup_type_new-card");
-const imageModalWindow = document.querySelector(".popup_type_image");
 // С submit ребята еще плохо работают.
 
 // Кнопки и прочие дом узлы
@@ -67,31 +62,7 @@ const cardNameInputValue = cardFormModalWindow.querySelector(
 const cardLinkInputValue = cardFormModalWindow.querySelector(
   ".popup__input_type_url"
 );
-const imageElement = imageModalWindow.querySelector(".popup__image");
-const imageCaption = imageModalWindow.querySelector(".popup__caption");
 // решение на минималках. Конечно, студент может корректно обобрать велью инпутов в форме.
-
-const getCardElement = (data) => {
-  const cardElement = cardTemplate.cloneNode(true);
-  const likeButton = cardElement.querySelector(".card__like-button");
-  const deleteButton = cardElement.querySelector(".card__delete-button");
-  const cardImage = cardElement.querySelector(".card__image");
-
-  cardImage.style.backgroundImage = `url(${data.link})`;
-  cardElement.querySelector(".card__title").textContent = data.name;
-
-  likeButton.addEventListener("click", handleLikeIcon);
-  deleteButton.addEventListener("click", handleDeleteCard);
-  cardImage.addEventListener("click", () => handlePreviewPicture(data));
-  return cardElement;
-};
-
-const isEscEvent = (evt, action) => {
-  const activePopup = document.querySelector(".popup_is-opened");
-  if (evt.which === ESC_KEYCODE) {
-    action(activePopup);
-  }
-};
 
 const openModalWindow = (modalWindow) => {
   modalWindow.classList.add("popup_is-opened");
@@ -104,28 +75,7 @@ const closeModalWindow = (modalWindow) => {
 };
 
 const renderCard = (data, wrap) => {
-  wrap.prepend(getCardElement(data));
-};
-
-// Хэндлеры
-const handleLikeIcon = (evt) => {
-  evt.target.classList.toggle("card__like-button_is-active");
-};
-
-const handleDeleteCard = (evt) => {
-  evt.target.closest(".card").remove();
-};
-
-const handlePreviewPicture = (data) => {
-  imageElement.src = data.link;
-  imageElement.alt = `Изображение ${data.name}`;
-  imageCaption.textContent = data.name;
-  openModalWindow(imageModalWindow);
-};
-
-const handleEscUp = (evt) => {
-  evt.preventDefault();
-  isEscEvent(evt, closeModalWindow);
+  wrap.prepend(new Card(data, "#card-template").render());
 };
 
 const formSubmitHandler = (evt) => {
@@ -175,14 +125,6 @@ cardFormModalWindow.addEventListener("click", (evt) => {
     evt.target.classList.contains("popup__close")
   ) {
     closeModalWindow(cardFormModalWindow);
-  }
-});
-imageModalWindow.addEventListener("click", (evt) => {
-  if (
-    evt.target.classList.contains("popup") ||
-    evt.target.classList.contains("popup__close")
-  ) {
-    closeModalWindow(imageModalWindow);
   }
 });
 
