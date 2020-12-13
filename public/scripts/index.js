@@ -1,5 +1,7 @@
 import Card from "./Card.js";
+import FormValidator from "./FormValidator.js";
 
+const ESC_KEYCODE = 27;
 // Константы
 
 const initialCards = [
@@ -63,6 +65,18 @@ const cardLinkInputValue = cardFormModalWindow.querySelector(
   ".popup__input_type_url"
 );
 // решение на минималках. Конечно, студент может корректно обобрать велью инпутов в форме.
+
+const isEscEvent = (evt, action) => {
+  const activePopup = document.querySelector(".popup_is-opened");
+  if (evt.which === ESC_KEYCODE) {
+    action(activePopup);
+  }
+};
+
+const handleEscUp = (evt) => {
+  evt.preventDefault();
+  isEscEvent(evt, closeModalWindow);
+};
 
 const openModalWindow = (modalWindow) => {
   modalWindow.classList.add("popup_is-opened");
@@ -131,6 +145,23 @@ cardFormModalWindow.addEventListener("click", (evt) => {
 // Render
 initialCards.forEach((data) => {
   renderCard(data, placesWrap);
+});
+
+// Set up form validation
+const formSelector = ".popup__form";
+
+const settings = {
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__button",
+  inactiveButtonClass: "popup__button_disabled",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__error_visible",
+};
+
+const getFormList = Array.from(document.querySelectorAll(formSelector));
+getFormList.forEach((formElement) => {
+  const validator = new FormValidator(settings, formElement);
+  validator.enableValidation();
 });
 
 /* Саммари:
