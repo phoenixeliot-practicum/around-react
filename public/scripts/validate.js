@@ -1,20 +1,34 @@
-const showInputError = (formElement, inputElement, errorMessage, {errorClass, inputErrorClass}) => {
+const showInputError = (
+  formElement,
+  inputElement,
+  errorMessage,
+  { errorClass, inputErrorClass }
+) => {
   const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
   inputElement.classList.add(inputErrorClass);
   errorElement.textContent = errorMessage;
   errorElement.classList.add(errorClass);
 };
 
-const hideInputError = (formElement, inputElement, {errorClass, inputErrorClass}) => {
+const hideInputError = (
+  formElement,
+  inputElement,
+  { errorClass, inputErrorClass }
+) => {
   const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
   inputElement.classList.remove(inputErrorClass);
   errorElement.classList.remove(errorClass);
-  errorElement.textContent = '';
+  errorElement.textContent = "";
 };
 
 const checkInputValidity = (formElement, inputElement, enums) => {
   if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage, enums);
+    showInputError(
+      formElement,
+      inputElement,
+      inputElement.validationMessage,
+      enums
+    );
   } else {
     hideInputError(formElement, inputElement, enums);
   }
@@ -36,45 +50,45 @@ const toggleButtonState = (inputList, buttonElement, inactiveButtonClass) => {
   }
 };
 
-const setEventListeners = (formElement, {inputSelector, submitButtonSelector, inactiveButtonClass, ...rest}) => {
-  const inputList = Array.from(formElement.querySelectorAll(inputSelector));
-  const buttonElement = formElement.querySelector(submitButtonSelector);
+const formSelector = ".popup__form";
 
-  inputList.forEach((inputElement) => {
-    inputElement.addEventListener('input', () => {
-      checkInputValidity(formElement, inputElement, rest);
-      toggleButtonState(inputList, buttonElement, inactiveButtonClass);
-    });
-  });
+const settings = {
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__button",
+  inactiveButtonClass: "popup__button_disabled",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__error_visible",
 };
 
-const enableValidation = ({formSelector, ...rest}) => {
-  const getFormList = Array.from(document.querySelectorAll(formSelector));
-  getFormList.forEach((formElement) => {
-    formElement.addEventListener('submit', (evt) => {
+const getFormList = Array.from(document.querySelectorAll(formSelector));
+getFormList.forEach((formElement) => {
+  const validator = new FormValidator(settings, formElement);
+  validator.enableValidation();
+});
+
+export default class FormValidator {
+  constructor(settings, formElement) {
+    this.settings = settings;
+    formElement.addEventListener("submit", (evt) => {
       evt.preventDefault();
     });
     setEventListeners(formElement, rest);
-  })
-};
+  }
 
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_visible'
-});
+  enableValidation() {}
 
+  setEventListeners(
+    formElement,
+    { inputSelector, submitButtonSelector, inactiveButtonClass, ...rest }
+  ) {
+    const inputList = Array.from(formElement.querySelectorAll(inputSelector));
+    const buttonElement = formElement.querySelector(submitButtonSelector);
 
-/* Саммари:
-* Код validate.js почти полностью есть в тренажере.
-* Поэтому вариант решения выше -- типичный пример и при проверке важно к нему стремиться.
-*
-* Студенты знают про rest/spread. Весь материал из файла validate.js есть в тренажере.
-*
-* Ключевой момент -- подвести к такой реализации тех, кто закликивает тренажер.
-* Не стесняйтесь отправлять студентов в тренажер.
-*
-* */
+    inputList.forEach((inputElement) => {
+      inputElement.addEventListener("input", () => {
+        checkInputValidity(formElement, inputElement, rest);
+        toggleButtonState(inputList, buttonElement, inactiveButtonClass);
+      });
+    });
+  }
+}
