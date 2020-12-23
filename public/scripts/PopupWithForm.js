@@ -2,17 +2,18 @@ import Popup from "./Popup.js";
 export default class PopupWithForm extends Popup {
   constructor(popupSelector, handleSubmit) {
     super(popupSelector);
+    this.inputs = {};
+    this._element.querySelectorAll("form input").forEach((input) => {
+      this.inputs[input.getAttribute("name")] = input;
+    });
     this.handleSubmit = handleSubmit;
-    this.titleInput = this._element.querySelector(".popup__input_type_name");
-    this.descriptionInput = this._element.querySelector(
-      ".popup__input_type_description"
-    );
   }
   _getInputValues() {
-    return {
-      title: this.titleInput.value,
-      description: this.descriptionInput.value,
-    };
+    const values = {};
+    Object.keys(this.inputs).forEach((inputName) => {
+      values[inputName] = this.inputs[inputName].value;
+    });
+    return values;
   }
   setEventListeners() {
     super.setEventListeners();
@@ -22,14 +23,16 @@ export default class PopupWithForm extends Popup {
       this.close();
     });
   }
-  open({ title, description }) {
-    this.titleInput.value = title;
-    this.descriptionInput.value = description;
+  open(data = {}) {
+    Object.keys(this.inputs).forEach((inputName) => {
+      this.inputs[inputName].value = data[inputName] || "";
+    });
     super.open();
   }
   close() {
-    this.titleInput.value = "";
-    this.descriptionInput.value = "";
+    Object.keys(this.inputs).forEach((inputName) => {
+      this.inputs[inputName].value = "";
+    });
     super.close();
   }
 }

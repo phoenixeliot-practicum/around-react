@@ -41,7 +41,7 @@ const initialCards = [
 // Врапперы
 const placesWrap = document.querySelector(".places__list");
 // const editFormModalWindow = document.querySelector(".popup_type_edit");
-const cardFormModalWindow = document.querySelector(".popup_type_new-card");
+// const cardFormModalWindow = document.querySelector(".popup_type_new-card");
 // С submit ребята еще плохо работают.
 
 // Кнопки и прочие дом узлы
@@ -59,12 +59,12 @@ const profileDescription = document.querySelector(".profile__description");
 // const descriptionInputValue = editFormModalWindow.querySelector(
 //   ".popup__input_type_description"
 // );
-const cardNameInputValue = cardFormModalWindow.querySelector(
-  ".popup__input_type_card-name"
-);
-const cardLinkInputValue = cardFormModalWindow.querySelector(
-  ".popup__input_type_url"
-);
+// const cardNameInputValue = cardFormModalWindow.querySelector(
+//   ".popup__input_type_card-name"
+// );
+// const cardLinkInputValue = cardFormModalWindow.querySelector(
+//   ".popup__input_type_url"
+// );
 // решение на минималках. Конечно, студент может корректно обобрать велью инпутов в форме.
 
 // const handleEscUp = (evt) => {
@@ -87,39 +87,38 @@ const renderCard = (data, wrap) => {
 };
 
 const formSubmitHandler = (data) => {
-  profileTitle.textContent = data.title;
+  profileTitle.textContent = data.name;
   profileDescription.textContent = data.description;
 };
 
-const cardFormSubmitHandler = (evt) => {
-  evt.preventDefault();
-  renderCard(
-    {
-      name: cardNameInputValue.value,
-      link: cardLinkInputValue.value,
-    },
-    placesWrap
-  );
-  closeModalWindow(cardFormModalWindow);
+const cardFormSubmitHandler = (data) => {
+  // evt.preventDefault();
+  renderCard(data, placesWrap);
+  // closeModalWindow(cardFormModalWindow);
 };
 
 const editFormPopup = new PopupWithForm(".popup_type_edit", formSubmitHandler);
 editFormPopup.setEventListeners();
+const addCardFormPopup = new PopupWithForm(
+  ".popup_type_new-card",
+  cardFormSubmitHandler
+);
+addCardFormPopup.setEventListeners();
 
 // EventListeners
 // editFormModalWindow.addEventListener("submit", formSubmitHandler);
-cardFormModalWindow.addEventListener("submit", cardFormSubmitHandler);
+// cardFormModalWindow.addEventListener("submit", cardFormSubmitHandler);
 
 openEditFormButton.addEventListener("click", () => {
   const userInfo = {
-    title: profileTitle.textContent,
+    name: profileTitle.textContent,
     description: profileDescription.textContent,
   };
   editFormPopup.open(userInfo);
 });
 
 openCardFormButton.addEventListener("click", () => {
-  openModalWindow(cardFormModalWindow);
+  addCardFormPopup.open();
 });
 
 // editFormModalWindow.addEventListener("click", (evt) => {
