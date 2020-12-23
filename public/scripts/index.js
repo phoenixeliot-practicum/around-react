@@ -66,30 +66,23 @@ const cardLinkInputValue = cardFormModalWindow.querySelector(
 );
 // решение на минималках. Конечно, студент может корректно обобрать велью инпутов в форме.
 
-const isEscEvent = (evt, action) => {
-  const activePopup = document.querySelector(".popup_is-opened");
-  if (evt.which === ESC_KEYCODE) {
-    action(activePopup);
-  }
-};
+// const handleEscUp = (evt) => {
+//   evt.preventDefault();
+//   isEscEvent(evt, closeModalWindow);
+// };
 
-const handleEscUp = (evt) => {
-  evt.preventDefault();
-  isEscEvent(evt, closeModalWindow);
-};
+// const openModalWindow = (modalWindow) => {
+//   modalWindow.classList.add("popup_is-opened");
+//   document.addEventListener("keyup", handleEscUp);
+// };
 
-const openModalWindow = (modalWindow) => {
-  modalWindow.classList.add("popup_is-opened");
-  document.addEventListener("keyup", handleEscUp);
-};
-
-const closeModalWindow = (modalWindow) => {
-  modalWindow.classList.remove("popup_is-opened");
-  document.removeEventListener("keyup", handleEscUp);
-};
+// const closeModalWindow = (modalWindow) => {
+//   modalWindow.classList.remove("popup_is-opened");
+//   document.removeEventListener("keyup", handleEscUp);
+// };
 
 const renderCard = (data, wrap) => {
-  wrap.prepend(new Card(data, "#card-template").render());
+  wrap.prepend(new Card(data, "#card-template", ".popup_type_image").render());
 };
 
 const formSubmitHandler = (evt) => {

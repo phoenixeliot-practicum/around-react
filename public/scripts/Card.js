@@ -1,51 +1,46 @@
-const ESC_KEYCODE = 27;
-const imageModalWindow = document.querySelector(".popup_type_image");
-const imageElement = imageModalWindow.querySelector(".popup__image");
-const imageCaption = imageModalWindow.querySelector(".popup__caption");
+import PopupWithImage from "./PopupWithImage.js";
 
-const isEscEvent = (evt, action) => {
-  const activePopup = document.querySelector(".popup_is-opened");
-  if (evt.which === ESC_KEYCODE) {
-    action(activePopup);
-  }
-};
+// const ESC_KEYCODE = 27;
 
-const handleEscUp = (evt) => {
-  evt.preventDefault();
-  isEscEvent(evt, closeModalWindow);
-};
+// const isEscEvent = (evt, action) => {
+//   const activePopup = document.querySelector(".popup_is-opened");
+//   if (evt.which === ESC_KEYCODE) {
+//     action(activePopup);
+//   }
+// };
 
-const openModalWindow = () => {
-  imageModalWindow.classList.add("popup_is-opened");
-  document.addEventListener("keyup", handleEscUp);
-};
+// const handleEscUp = (evt) => {
+//   evt.preventDefault();
+//   isEscEvent(evt, closeModalWindow);
+// };
 
-const closeModalWindow = () => {
-  imageModalWindow.classList.remove("popup_is-opened");
-  document.removeEventListener("keyup", handleEscUp);
-};
+// const openModalWindow = () => {
+//   imageModalWindow.classList.add("popup_is-opened");
+//   document.addEventListener("keyup", handleEscUp);
+// };
 
-imageModalWindow.addEventListener("click", (evt) => {
-  if (
-    evt.target.classList.contains("popup") ||
-    evt.target.classList.contains("popup__close")
-  ) {
-    closeModalWindow(imageModalWindow);
-  }
-});
+// const closeModalWindow = () => {
+//   imageModalWindow.classList.remove("popup_is-opened");
+//   document.removeEventListener("keyup", handleEscUp);
+// };
+
+// imageModalWindow.addEventListener("click", (evt) => {
+//   if (
+//     evt.target.classList.contains("popup") ||
+//     evt.target.classList.contains("popup__close")
+//   ) {
+//     closeModalWindow(imageModalWindow);
+//   }
+// });
 
 // Темплейты
 export default class Card {
-  constructor(
-    data,
-    templateSelector,
-    imageElementSelector,
-    imageCaptionSelector
-  ) {
+  constructor(data, templateSelector, imagePopupSelector) {
     this.data = data;
     this.templateSelector = templateSelector;
-    this.imageElementSelector = imageElementSelector;
-    this.imageCaptionSelector = imageCaptionSelector;
+    this.imagePopupSelector = imagePopupSelector;
+    this.imagePopup = new PopupWithImage(imagePopupSelector);
+    this.imagePopup.setEventListeners();
   }
 
   render() {
@@ -78,9 +73,9 @@ export default class Card {
   }
 
   _handlePreviewPicture() {
-    imageElement.src = this.data.link;
-    imageElement.alt = `Изображение ${this.data.name}`;
-    imageCaption.textContent = this.data.name;
-    openModalWindow(imageModalWindow);
+    this.imagePopup.open({
+      name: this.data.name,
+      link: this.data.link,
+    });
   }
 }
