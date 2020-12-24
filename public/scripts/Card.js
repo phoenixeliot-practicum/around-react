@@ -1,46 +1,8 @@
-import PopupWithImage from "./PopupWithImage.js";
-
-// const ESC_KEYCODE = 27;
-
-// const isEscEvent = (evt, action) => {
-//   const activePopup = document.querySelector(".popup_is-opened");
-//   if (evt.which === ESC_KEYCODE) {
-//     action(activePopup);
-//   }
-// };
-
-// const handleEscUp = (evt) => {
-//   evt.preventDefault();
-//   isEscEvent(evt, closeModalWindow);
-// };
-
-// const openModalWindow = () => {
-//   imageModalWindow.classList.add("popup_is-opened");
-//   document.addEventListener("keyup", handleEscUp);
-// };
-
-// const closeModalWindow = () => {
-//   imageModalWindow.classList.remove("popup_is-opened");
-//   document.removeEventListener("keyup", handleEscUp);
-// };
-
-// imageModalWindow.addEventListener("click", (evt) => {
-//   if (
-//     evt.target.classList.contains("popup") ||
-//     evt.target.classList.contains("popup__close")
-//   ) {
-//     closeModalWindow(imageModalWindow);
-//   }
-// });
-
-// Темплейты
 export default class Card {
-  constructor(data, templateSelector, imagePopupSelector) {
+  constructor(data, templateSelector, handleCardClick) {
     this.data = data;
     this.templateSelector = templateSelector;
-    this.imagePopupSelector = imagePopupSelector;
-    this.imagePopup = new PopupWithImage(imagePopupSelector);
-    this.imagePopup.setEventListeners();
+    this.handleCardClick = handleCardClick;
   }
 
   render() {
@@ -57,7 +19,7 @@ export default class Card {
 
     likeButton.addEventListener("click", this._handleLikeIcon);
     deleteButton.addEventListener("click", this._handleDeleteCard);
-    cardImage.addEventListener("click", () => this._handlePreviewPicture());
+    cardImage.addEventListener("click", () => this.handleCardClick(this.data));
 
     this.element = cardElement;
     return cardElement;
@@ -70,12 +32,5 @@ export default class Card {
 
   _handleDeleteCard(evt) {
     evt.target.closest(".card").remove();
-  }
-
-  _handlePreviewPicture() {
-    this.imagePopup.open({
-      name: this.data.name,
-      link: this.data.link,
-    });
   }
 }

@@ -3,54 +3,23 @@ import FormValidator from "./FormValidator.js";
 import PopupWithForm from "./PopupWithForm.js";
 import UserInfo from "./UserInfo.js";
 import Section from "./Section.js";
-
-const ESC_KEYCODE = 27;
-
-const initialCards = [
-  {
-    name: "Архыз",
-    link:
-      "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg",
-  },
-  {
-    name: "Челябинская область",
-    link:
-      "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg",
-  },
-  {
-    name: "Иваново",
-    link:
-      "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg",
-  },
-  {
-    name: "Камчатка",
-    link:
-      "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg",
-  },
-  {
-    name: "Холмогорский район",
-    link:
-      "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg",
-  },
-  {
-    name: "Байкал",
-    link:
-      "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
-  },
-];
+import PopupWithImage from "./PopupWithImage.js";
+import initialCards from "./initialCards.js";
 
 const openEditFormButton = document.querySelector(".profile__edit-button");
 const openCardFormButton = document.querySelector(".profile__add-button");
 
-// const profileTitle = document.querySelector(".profile__title");
-// const profileDescription = document.querySelector(".profile__description");
+const imagePopup = new PopupWithImage(".popup_type_image");
+imagePopup.setEventListeners();
+
+const renderCard = (data) => {
+  return new Card(data, "#card-template", (data) => {
+    imagePopup.open(data);
+  }).render();
+};
 
 const section = new Section(
-  {
-    items: initialCards,
-    renderer: (data) =>
-      new Card(data, "#card-template", ".popup_type_image").render(),
-  },
+  { items: initialCards, renderer: renderCard },
   ".places__list"
 );
 section.render();
@@ -96,20 +65,3 @@ getFormList.forEach((formElement) => {
   const validator = new FormValidator(settings, formElement);
   validator.enableValidation();
 });
-
-/* Саммари:
- * Добавлены следующие файлы:
- * popup__button.css popup__button_disabled.css
- * popup__error.css popup__error_visible.css
- * popup__label.css
- * popup__input_type_error.css
- *
- * Изменена верстка модальных окон, добавлены HTML5-атрибуты: длина строки, novalidate, регулярные выражения.
- *
- * index.js терпит минимальный рефактор. В задании 6 проектной работы нет указаний на рефактор index.js.
- * Код выше -- ожидаемый результат от студента.
- *
- * Делегирование - нежелательный, но необходимый элемент решения данной проектной работы.
- * Функция работы с модальными окнами видоизменена, поделена на две.
- *
- * */
