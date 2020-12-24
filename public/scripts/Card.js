@@ -52,7 +52,7 @@ export default class Card {
     const deleteButton = cardElement.querySelector(".card__delete-button");
     const cardImage = cardElement.querySelector(".card__image");
 
-    cardImage.style.backgroundImage = `url(${this.data.link})`;
+    cardImage.src = this.data.link;
     cardElement.querySelector(".card__title").textContent = this.data.name;
 
     likeButton.addEventListener("click", this._handleLikeIcon);

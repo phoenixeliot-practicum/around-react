@@ -1,6 +1,7 @@
 import Card from "./Card.js";
 import FormValidator from "./FormValidator.js";
 import PopupWithForm from "./PopupWithForm.js";
+import UserInfo from "./UserInfo.js";
 
 const ESC_KEYCODE = 27;
 // Константы
@@ -99,22 +100,25 @@ const cardFormSubmitHandler = (data) => {
 
 const editFormPopup = new PopupWithForm(".popup_type_edit", formSubmitHandler);
 editFormPopup.setEventListeners();
+
 const addCardFormPopup = new PopupWithForm(
   ".popup_type_new-card",
   cardFormSubmitHandler
 );
 addCardFormPopup.setEventListeners();
 
+const userInfo = new UserInfo({
+  nameSelector: ".profile__title",
+  descriptionSelector: ".profile__description",
+});
+
 // EventListeners
 // editFormModalWindow.addEventListener("submit", formSubmitHandler);
 // cardFormModalWindow.addEventListener("submit", cardFormSubmitHandler);
 
 openEditFormButton.addEventListener("click", () => {
-  const userInfo = {
-    name: profileTitle.textContent,
-    description: profileDescription.textContent,
-  };
-  editFormPopup.open(userInfo);
+  const data = userInfo.getUserInfo();
+  editFormPopup.open(data);
 });
 
 openCardFormButton.addEventListener("click", () => {
