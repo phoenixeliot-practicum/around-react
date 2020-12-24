@@ -5,18 +5,20 @@
   "description": "Yandex.Praktikum canonical projects",
   "scripts": {
     "build": "rm -rf dist; webpack",
-    "dev": "webpack serve --open \"Google Chrome\""
+    "dev": "webpack serve --open \"Google Chrome\"",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/pcr-web/canonical_ru-en_sprint6.git"
+    "url": "git+https://github.com/phoenixeliot-practicum/around-react.git"
   },
   "author": "Andrey Strogov",
   "license": "ISC",
   "bugs": {
     "url": "https://gitlab.com/pcr-web/canonical_ru-en_sprint6/issues"
   },
-  "homepage": "https://phoenixeliot.github.io/web_project_8",
+  "homepage": "https://phoenixeliot-practicum.github.io/web_project_8",
   "dependencies": {
     "@babel/core": "^7.12.10",
     "autoprefixer": "^10.1.0",
