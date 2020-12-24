@@ -2,9 +2,9 @@ import Card from "./Card.js";
 import FormValidator from "./FormValidator.js";
 import PopupWithForm from "./PopupWithForm.js";
 import UserInfo from "./UserInfo.js";
+import Section from "./Section.js";
 
 const ESC_KEYCODE = 27;
-// Константы
 
 const initialCards = [
   {
@@ -39,72 +39,30 @@ const initialCards = [
   },
 ];
 
-// Врапперы
-const placesWrap = document.querySelector(".places__list");
-// const editFormModalWindow = document.querySelector(".popup_type_edit");
-// const cardFormModalWindow = document.querySelector(".popup_type_new-card");
-// С submit ребята еще плохо работают.
-
-// Кнопки и прочие дом узлы
 const openEditFormButton = document.querySelector(".profile__edit-button");
 const openCardFormButton = document.querySelector(".profile__add-button");
 
-// DOM узлы профиля
-const profileTitle = document.querySelector(".profile__title");
-const profileDescription = document.querySelector(".profile__description");
+// const profileTitle = document.querySelector(".profile__title");
+// const profileDescription = document.querySelector(".profile__description");
 
-// Данные форм и элементы форм
-// const titleInputValue = editFormModalWindow.querySelector(
-//   ".popup__input_type_name"
-// );
-// const descriptionInputValue = editFormModalWindow.querySelector(
-//   ".popup__input_type_description"
-// );
-// const cardNameInputValue = cardFormModalWindow.querySelector(
-//   ".popup__input_type_card-name"
-// );
-// const cardLinkInputValue = cardFormModalWindow.querySelector(
-//   ".popup__input_type_url"
-// );
-// решение на минималках. Конечно, студент может корректно обобрать велью инпутов в форме.
+const section = new Section(
+  {
+    items: initialCards,
+    renderer: (data) =>
+      new Card(data, "#card-template", ".popup_type_image").render(),
+  },
+  ".places__list"
+);
+section.render();
 
-// const handleEscUp = (evt) => {
-//   evt.preventDefault();
-//   isEscEvent(evt, closeModalWindow);
-// };
-
-// const openModalWindow = (modalWindow) => {
-//   modalWindow.classList.add("popup_is-opened");
-//   document.addEventListener("keyup", handleEscUp);
-// };
-
-// const closeModalWindow = (modalWindow) => {
-//   modalWindow.classList.remove("popup_is-opened");
-//   document.removeEventListener("keyup", handleEscUp);
-// };
-
-const renderCard = (data, wrap) => {
-  wrap.prepend(new Card(data, "#card-template", ".popup_type_image").render());
-};
-
-const formSubmitHandler = (data) => {
-  profileTitle.textContent = data.name;
-  profileDescription.textContent = data.description;
-};
-
-const cardFormSubmitHandler = (data) => {
-  // evt.preventDefault();
-  renderCard(data, placesWrap);
-  // closeModalWindow(cardFormModalWindow);
-};
-
-const editFormPopup = new PopupWithForm(".popup_type_edit", formSubmitHandler);
+const editFormPopup = new PopupWithForm(".popup_type_edit", (data) => {
+  userInfo.setUserInfo(data);
+});
 editFormPopup.setEventListeners();
 
-const addCardFormPopup = new PopupWithForm(
-  ".popup_type_new-card",
-  cardFormSubmitHandler
-);
+const addCardFormPopup = new PopupWithForm(".popup_type_new-card", (data) => {
+  section.addItem(data);
+});
 addCardFormPopup.setEventListeners();
 
 const userInfo = new UserInfo({
@@ -113,9 +71,6 @@ const userInfo = new UserInfo({
 });
 
 // EventListeners
-// editFormModalWindow.addEventListener("submit", formSubmitHandler);
-// cardFormModalWindow.addEventListener("submit", cardFormSubmitHandler);
-
 openEditFormButton.addEventListener("click", () => {
   const data = userInfo.getUserInfo();
   editFormPopup.open(data);
@@ -123,28 +78,6 @@ openEditFormButton.addEventListener("click", () => {
 
 openCardFormButton.addEventListener("click", () => {
   addCardFormPopup.open();
-});
-
-// editFormModalWindow.addEventListener("click", (evt) => {
-//   if (
-//     evt.target.classList.contains("popup") ||
-//     evt.target.classList.contains("popup__close")
-//   ) {
-//     closeModalWindow(editFormModalWindow);
-//   }
-// });
-// cardFormModalWindow.addEventListener("click", (evt) => {
-//   if (
-//     evt.target.classList.contains("popup") ||
-//     evt.target.classList.contains("popup__close")
-//   ) {
-//     closeModalWindow(cardFormModalWindow);
-//   }
-// });
-
-// Render
-initialCards.forEach((data) => {
-  renderCard(data, placesWrap);
 });
 
 // Set up form validation
