@@ -39,6 +39,13 @@ const userInfo = new UserInfo({
   descriptionSelector: ".profile__description",
 });
 
+const initialUserInfo = {
+  name: "Johan Smithy",
+  description: "Explorer Extraordinaire",
+};
+
+userInfo.setUserInfo(initialUserInfo);
+
 // EventListeners
 openEditFormButton.addEventListener("click", () => {
   const data = userInfo.getUserInfo();
