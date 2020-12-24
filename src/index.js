@@ -5,6 +5,7 @@ import UserInfo from "./components/UserInfo.js";
 import Section from "./components/Section.js";
 import PopupWithImage from "./components/PopupWithImage.js";
 import initialCards from "./initialCards.js";
+import "./pages/index.css";
 
 const openEditFormButton = document.querySelector(".profile__edit-button");
 const openCardFormButton = document.querySelector(".profile__add-button");
